@@ -22,4 +22,28 @@ class API {
       var response = await http.post(url, headers: {"content-Type": "application/json"}, body: body);
       return response;
   }
+
+  Future<http.Response> editCarro(String id, String nome, String marca, String modelo) async {
+    int a = int.parse(id);
+    var url = baseUrl + "/carro/$a";
+    Map data = {
+      'id': '$a',
+      'nome': '$nome',
+      'marca': '$marca',
+      "modelo": '$modelo'
+    };
+
+    var body = json.encode(data);
+
+    var response = await http.put(url, headers: {"content-Type": "application/json"}, body: body);
+    return response;
+  }
+
+  Future<http.Response> removeCarro(String id) async {
+    int a = int.parse(id);
+    var url = baseUrl + "/carro/$a";
+
+    var response = await http.delete(url, headers: {"content-Type": "application/json"});
+    return response;
+  }
 }

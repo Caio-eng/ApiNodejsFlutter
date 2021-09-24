@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend/views/detail.dart';
 import 'package:http/http.dart' as http;
 
 import 'views/addcarpage.dart';
@@ -32,7 +35,7 @@ class _HomePageState extends State<HomePage> {
 
   var carros = <Carro>[];
 
-  _getCarros() {
+  _getCarros()  {
     API.getCarros().then((response) {
       setState(() {
         Iterable lista = json.decode(response.body);
@@ -57,9 +60,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _getCarros();
-    });
+    this._getCarros();
   }
 
   @override
@@ -85,21 +86,69 @@ class _HomePageState extends State<HomePage> {
     return ListView.builder(
         itemCount: carros.length,
         itemBuilder: (context, index) {
-          return Card(
-            color: Colors.white,
-            child: ListTile(
-              leading: Icon(Icons.directions_car, size: 30, color: Colors.indigo,),
-              title: Text(
-                "\nAutomovel: " + carros[index].nome,
-                style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+          return Column(
+            children: [
+              Container(
+                padding: EdgeInsets.all(10),
+                child: GestureDetector(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Detail(
+                          list: carros,
+                          index: index
+                      )
+                    )
+                  ),
+                  child: Container(
+                    height: 100.3,
+                    child: Card(
+                      color: Colors.white,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                Container(
+                                  child: Text(
+                                      "Automovel: " + carros[index].nome,
+                                       style: TextStyle(
+                                         fontSize: 20,
+                                         color: Colors.black87
+                                       ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                Container(
+                                  child: Text(
+                                    "Marca: " + carros[index].marca,
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.black87
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ),
-              subtitle: Text(
-                "\nMarca: ${carros[index].marca}",
-                style: TextStyle(fontSize: 20, color: Colors.black),
-              ),
-            ),
+            ],
           );
         }
     );
   }
+
 }

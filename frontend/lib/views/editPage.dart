@@ -1,62 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/controllers/api.dart';
+import 'package:frontend/main.dart';
+import 'package:frontend/models/carro.dart';
 
-class AddCarPage extends StatefulWidget {
-  const AddCarPage({Key? key}) : super(key: key);
+import 'addcarpage.dart';
+
+class EditCarPage extends StatefulWidget {
+  final List<Carro> list;
+  final int index;
+
+  EditCarPage({required this.list, required this.index});
 
   @override
-  _AddCarPageState createState() => _AddCarPageState();
+  _EditCarPageState createState() => _EditCarPageState();
 }
 
-class _AddCarPageState extends State<AddCarPage> {
+class _EditCarPageState extends State<EditCarPage> {
 
-  API api = API();
+  API api = new API();
   final _formKey = GlobalKey<FormState>();
-
-  final TextEditingController nomeController = TextEditingController();
-  final TextEditingController marcaController = TextEditingController();
-  final TextEditingController modeloController = TextEditingController();
-
+  late TextEditingController nomeController;
+  late TextEditingController marcaController;
+  late TextEditingController modeloController;
+  late TextEditingController idController;
   String _mensagemErro = "";
 
-  _validarCampos() {
-    String nome = nomeController.text;
-    String marca = marcaController.text;
-    String modelo = modeloController.text;
-
-    if (nome.isNotEmpty && nome.length >= 4) {
-      if (marca.isNotEmpty) {
-        if (modelo.isNotEmpty) {
-          api.addCarro(
-            nomeController.text.trim(),
-            marcaController.text.trim(),
-            modeloController.text.trim(),
-          );
-          setState(() {
-
-          });
-          Navigator.pop(context, true);
-          setState(() {
-
-          });
-        } else {
-          setState(() {
-            _mensagemErro = 'Modelo é obrigatorio!';
-          });
-        }
-      } else {
-        setState(() {
-          _mensagemErro = 'Marca é obrigatorio!';
-        });
-      }
-    } else {
+  _navigateAddCarro(BuildContext context) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomePage()
+        ));
+    if (result) {
       setState(() {
-        _mensagemErro = 'O nome do carro tem que conter ao menos 4 caracteres!';
+
       });
     }
-
   }
 
+  @override
+  void initState() {
+    idController = new TextEditingController(
+      text: widget.list[widget.index].id.toString()
+    );
+    nomeController = new TextEditingController(
+        text: widget.list[widget.index].nome.toString()
+    );
+    marcaController = new TextEditingController(
+        text: widget.list[widget.index].marca.toString()
+    );
+    modeloController = new TextEditingController(
+        text: widget.list[widget.index].modelo.toString()
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,10 +74,27 @@ class _AddCarPageState extends State<AddCarPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Padding(
-                      padding: EdgeInsets.only(bottom: 8),
+                    padding: EdgeInsets.only(bottom: 8),
+                    child: TextFormField(
+                      controller: idController,
+                      decoration: InputDecoration(
+                        contentPadding:
+                        EdgeInsets.fromLTRB(32, 16, 32, 16),
+                        labelText: 'id',
+                        hintText: 'ID do Carro',
+                        //icon: Icon(Icons.directions_car),
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 8),
                     child: TextFormField(
                       controller: nomeController,
-                      autofocus: true,
                       decoration: InputDecoration(
                         contentPadding:
                         EdgeInsets.fromLTRB(32, 16, 32, 16),
@@ -90,7 +104,7 @@ class _AddCarPageState extends State<AddCarPage> {
                         filled: true,
                         fillColor: Colors.white,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10)
+                            borderRadius: BorderRadius.circular(10)
                         ),
                       ),
                     ),
@@ -143,7 +157,13 @@ class _AddCarPageState extends State<AddCarPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       onPressed: () {
-                        _validarCampos();
+                        api.editCarro(
+                            idController.text.trim(),
+                            nomeController.text.trim(),
+                            marcaController.text.trim(),
+                            modeloController.text.trim()
+                        );
+                        _navigateAddCarro(context);
                       },
                     ),
                   ),
