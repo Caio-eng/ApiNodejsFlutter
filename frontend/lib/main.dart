@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'addcarpage.dart';
-import 'api.dart';
-import 'carro.dart';
+import 'views/addcarpage.dart';
+import 'controllers/api.dart';
+import 'models/carro.dart';
 
 void main() {
   runApp(
@@ -54,15 +54,20 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  _HomePageState() {
-    _getCarros();
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _getCarros();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cars List'),
+        centerTitle: true,
+        title: Text('Lista de Carros'),
         backgroundColor: Colors.indigo[900],
       ),
       body: listaCarros(),
