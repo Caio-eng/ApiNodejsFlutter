@@ -3,13 +3,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'addcarpage.dart';
 import 'api.dart';
 import 'carro.dart';
 
 void main() {
   runApp(
     MaterialApp(
+      title: 'Nodejs-Flutter',
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
       home: HomePage(),
     ),
   );
@@ -35,6 +41,19 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  _navigateAddCarro(BuildContext context) async {
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AddCarPage()
+        ));
+    if (result) {
+      setState(() {
+
+      });
+    }
+  }
+
   _HomePageState() {
     _getCarros();
   }
@@ -48,7 +67,9 @@ class _HomePageState extends State<HomePage> {
       ),
       body: listaCarros(),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){},
+        onPressed: (){
+          _navigateAddCarro(context);
+        },
         child: Icon(Icons.add, size: 30,),
       ),
     );
