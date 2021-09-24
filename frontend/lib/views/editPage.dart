@@ -38,6 +38,45 @@ class _EditCarPageState extends State<EditCarPage> {
     }
   }
 
+  _validarCampos() {
+    String nome = nomeController.text;
+    String marca = marcaController.text;
+    String modelo = modeloController.text;
+
+    if (nome.isNotEmpty && nome.length >= 4) {
+      if (marca.isNotEmpty) {
+        if (modelo.isNotEmpty) {
+          api.editCarro(
+              idController.text.trim(),
+              nomeController.text.trim(),
+              marcaController.text.trim(),
+              modeloController.text.trim()
+          );
+          setState(() {
+
+          });
+          _navigateAddCarro(context);
+          setState(() {
+
+          });
+        } else {
+          setState(() {
+            _mensagemErro = 'Modelo é obrigatorio!';
+          });
+        }
+      } else {
+        setState(() {
+          _mensagemErro = 'Marca é obrigatorio!';
+        });
+      }
+    } else {
+      setState(() {
+        _mensagemErro = 'O nome do carro tem que conter ao menos 4 caracteres!';
+      });
+    }
+
+  }
+
   @override
   void initState() {
     idController = new TextEditingController(
@@ -131,7 +170,7 @@ class _EditCarPageState extends State<EditCarPage> {
                     padding: EdgeInsets.only(top: 10, bottom: 10),
                     child: RaisedButton(
                       child: Text(
-                        "Salvar",
+                        "Atualizar",
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                       color: Colors.indigo[900],
@@ -139,13 +178,7 @@ class _EditCarPageState extends State<EditCarPage> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
                       onPressed: () {
-                        api.editCarro(
-                            idController.text.trim(),
-                            nomeController.text.trim(),
-                            marcaController.text.trim(),
-                            modeloController.text.trim()
-                        );
-                        _navigateAddCarro(context);
+                        _validarCampos();
                       },
                     ),
                   ),
