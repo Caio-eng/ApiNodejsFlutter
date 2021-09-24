@@ -60,7 +60,7 @@ class _EditCarPageState extends State<EditCarPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Cadastrar Carro'),
+        title: Text('Editar Cadastro'),
         backgroundColor: Colors.indigo[900],
       ),
       body: Form(
@@ -73,24 +73,6 @@ class _EditCarPageState extends State<EditCarPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 8),
-                    child: TextFormField(
-                      controller: idController,
-                      decoration: InputDecoration(
-                        contentPadding:
-                        EdgeInsets.fromLTRB(32, 16, 32, 16),
-                        labelText: 'id',
-                        hintText: 'ID do Carro',
-                        //icon: Icon(Icons.directions_car),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                      ),
-                    ),
-                  ),
                   Padding(
                     padding: EdgeInsets.only(bottom: 8),
                     child: TextFormField(
