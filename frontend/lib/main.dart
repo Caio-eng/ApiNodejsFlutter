@@ -71,6 +71,7 @@ class _HomePageState extends State<HomePage> {
           _navigateAddCarro(context);
         },
         child: Icon(Icons.add, size: 30,),
+        backgroundColor: Colors.indigo[900],
       ),
     );
   }
